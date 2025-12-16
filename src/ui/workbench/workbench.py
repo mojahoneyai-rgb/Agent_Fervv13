@@ -55,7 +55,7 @@ class Workbench(ctk.CTkFrame):
         """Initialize menu bar with File, Edit, View, Run, Terminal, Help"""
         from tkinter import Menu
         
-        menu_frame = ctk.CTkFrame(self, height=30, fg_color="#303031", corner_radius=0)
+        menu_frame = ctk.CTkFrame(self, height=30, fg_color=self.theme.get_color("bg_sidebar"), corner_radius=0)
         menu_frame.grid(row=0, column=0, columnspan=4, sticky="ew")
         
         # Menu buttons
@@ -74,7 +74,7 @@ class Workbench(ctk.CTkFrame):
                 text=name, 
                 fg_color="transparent", 
                 width=50,
-                hover_color="#3e3e42",
+                hover_color=self.theme.get_color("hover"),
                 command=command
             )
             btn.pack(side="left", padx=2)
@@ -83,8 +83,9 @@ class Workbench(ctk.CTkFrame):
         ctk.CTkLabel(
             menu_frame, 
             text="AI Fervv IDE - Galactic Edition", 
-            text_color="gray"
-        ).pack(side="right", padx=10)
+            text_color="gray",
+            font=("Segoe UI", 12)
+        ).pack(side="right", padx=15)
 
     def _show_file_menu(self):
         from tkinter import Menu
@@ -142,7 +143,7 @@ class Workbench(ctk.CTkFrame):
         top.geometry("400x200")
         ctk.CTkLabel(top, text="AI Fervv IDE", font=("Segoe UI", 18, "bold")).pack(pady=20)
         ctk.CTkLabel(top, text="Galactic Edition", text_color="gray").pack()
-        ctk.CTkLabel(top, text="Version: 2.0.0", text_color="gray").pack(pady=5)
+        ctk.CTkLabel(top, text="Version: 2.1.0", text_color="gray").pack(pady=5)
 
     def toggle_sidebar(self):
         if self.sidebar_container.winfo_viewable():
@@ -156,30 +157,49 @@ class Workbench(ctk.CTkFrame):
             pass  # Implement with DockingManager
 
     def _init_activity_bar(self):
-        self.activity_bar = ctk.CTkFrame(self, width=50, corner_radius=0, fg_color=self.theme.get_color("bg_activity"))
+        from src.ui.assets.icons import get_icon
+        
+        # New Width: 64px for comfort
+        self.activity_bar = ctk.CTkFrame(self, width=64, corner_radius=0, fg_color=self.theme.get_color("bg_activity"))
         self.activity_bar.grid(row=1, column=0, sticky="ns", rowspan=3)
+        self.activity_bar.grid_propagate(False)
+        
+        def create_act_btn(icon_name, command):
+            return ctk.CTkButton(
+                self.activity_bar, 
+                text="", 
+                image=get_icon(icon_name, color=self.theme.get_color("fg_function")),
+                width=48, 
+                height=48, 
+                corner_radius=10,
+                fg_color="transparent",
+                hover_color=self.theme.get_color("hover"),
+                command=command
+            )
         
         # View switching buttons
-        ctk.CTkButton(self.activity_bar, text="📁", width=40, height=40, fg_color="transparent",
-                     command=lambda: self.switch_sidebar("explorer")).pack(pady=5)
-        ctk.CTkButton(self.activity_bar, text="🔀", width=40, height=40, fg_color="transparent",
-                     command=lambda: self.switch_sidebar("git")).pack(pady=5)
-        ctk.CTkButton(self.activity_bar, text="📦", width=40, height=40, fg_color="transparent",
-                     command=lambda: self.switch_sidebar("snippets")).pack(pady=5)
-        ctk.CTkButton(self.activity_bar, text="✅", width=40, height=40, fg_color="transparent",
-                     command=lambda: self.switch_sidebar("tasks")).pack(pady=5)
+        create_act_btn("folder", lambda: self.switch_sidebar("explorer")).pack(pady=8, padx=8)
+        create_act_btn("git", lambda: self.switch_sidebar("git")).pack(pady=8, padx=8)
+        create_act_btn("tasks", lambda: self.switch_sidebar("tasks")).pack(pady=8, padx=8)
         
         # Settings Button
-        ctk.CTkButton(self.activity_bar, text="⚙", width=40, height=40, fg_color="transparent",
-                     command=lambda: global_event_bus.publish("open_settings", None)
-                     ).pack(side="bottom", pady=10)
+        ctk.CTkButton(
+            self.activity_bar, 
+            text="", 
+            image=get_icon("settings", color="gray"),
+            width=48, 
+            height=48, 
+            fg_color="transparent",
+            hover_color=self.theme.get_color("hover"),
+            command=lambda: global_event_bus.publish("open_settings", None)
+        ).pack(side="bottom", pady=16)
 
     def _init_sidebar(self):
         from src.ui.views.git_view import GitView
         from src.ui.views.snippets_view import SnippetsView
         from src.ui.views.tasks_view import TasksView
         
-        self.sidebar_container = ctk.CTkFrame(self, width=250, corner_radius=0, fg_color=self.theme.get_color("bg_sidebar"))
+        self.sidebar_container = ctk.CTkFrame(self, width=280, corner_radius=0, fg_color=self.theme.get_color("bg_sidebar")) # Increased width
         self.sidebar_container.grid(row=1, column=1, sticky="ns")
         self.sidebar_container.grid_propagate(False) # Force width
         
@@ -214,17 +234,23 @@ class Workbench(ctk.CTkFrame):
 
     def _init_editor_area(self):
         self.editor_tabs = ctk.CTkTabview(self, fg_color=self.theme.get_color("bg_main"), segmented_button_fg_color="#2d2d2d")
-        self.editor_tabs.grid(row=1, column=2, sticky="nsew", padx=5, pady=5)
+        self.editor_tabs.grid(row=1, column=2, sticky="nsew", padx=0, pady=0) # Removed padding for seamless look
         
         # Default Tab
         # self.open_file_in_tab(None) # Or start empty
 
     def _init_ai_panel(self):
-        self.ai_panel = ctk.CTkFrame(self, width=300, corner_radius=0, fg_color=self.theme.get_color("bg_sidebar"))
+        self.ai_panel = ctk.CTkFrame(self, width=320, corner_radius=0, fg_color=self.theme.get_color("bg_sidebar")) # Increased width
         self.ai_panel.grid(row=1, column=3, sticky="ns", rowspan=3)
         self.ai_panel.grid_propagate(False)
         
-        ctk.CTkLabel(self.ai_panel, text="AI ASSISTANT", font=("Segoe UI", 11, "bold"), text_color="gray").pack(anchor="w", padx=10, pady=10)
+        # Header
+        header = ctk.CTkFrame(self.ai_panel, height=40, fg_color="transparent")
+        header.pack(fill="x", padx=10, pady=10)
+        
+        from src.ui.assets.icons import get_icon
+        ctk.CTkLabel(header, text="", image=get_icon("robot", size=(20,20))).pack(side="left")
+        ctk.CTkLabel(header, text=" GALACTIC AI", font=("Segoe UI", 12, "bold"), text_color=self.theme.get_color("fg_function")).pack(side="left", padx=10)
         
         self.chat_view = ChatView(self.ai_panel, fg_color="transparent")
         self.chat_view.pack(fill="both", expand=True)
@@ -246,10 +272,12 @@ class Workbench(ctk.CTkFrame):
         self.editor_tabs.set(name)
 
     def _init_status_bar(self):
-        self.status_bar = ctk.CTkFrame(self, height=25, corner_radius=0, fg_color=self.theme.get_color("bg_status"))
+        # Elegant translucent-style status bar
+        self.status_bar = ctk.CTkFrame(self, height=28, corner_radius=0, fg_color=self.theme.get_color("bg_sidebar"))
         self.status_bar.grid(row=2, column=0, columnspan=4, sticky="ew") # Span 4 cols
         
-        ctk.CTkLabel(self.status_bar, text="Ready", text_color="white", font=("Segoe UI", 11)).pack(side="left", padx=10)
+        ctk.CTkLabel(self.status_bar, text="Ready", text_color="gray", font=("Segoe UI", 11)).pack(side="left", padx=15)
+        ctk.CTkLabel(self.status_bar, text="Python 3.11", text_color=self.theme.get_color("fg_function"), font=("Segoe UI", 11)).pack(side="right", padx=15)
 
     def on_theme_changed(self, theme):
         self.configure(fg_color=theme.colors.get("bg_main"))

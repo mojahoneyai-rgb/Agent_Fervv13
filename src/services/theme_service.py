@@ -30,12 +30,24 @@ class ThemeService:
         }))
         
         self.register_theme(Theme("Cyberpunk Neon", {
-            "bg_main": "#0b0c15", "bg_sidebar": "#13141f", "bg_activity": "#090a10",
-            "bg_status": "#ff007f", "fg_text": "#e0e6ed", "fg_comment": "#6272a4",
-            "fg_keyword": "#ff79c6", "fg_string": "#f1fa8c", "fg_function": "#8be9fd",
-            "fg_number": "#bd93f9", "border": "#44475a", "hover": "#282a36",
-            "select": "#44475a", "line_num_bg": "#0b0c15", "line_num_fg": "#6272a4",
-            "error": "#ff5555", "warning": "#f1fa8c", "success": "#50fa7b"
+            "bg_main": "#0b0c15",       # Deep Void
+            "bg_sidebar": "#0f1019",    # Slightly lighter void
+            "bg_activity": "#050608",   # Darkest
+            "bg_status": "#00f3ff",     # Neon Cyan
+            "fg_text": "#e0e6ed", 
+            "fg_comment": "#6272a4",
+            "fg_keyword": "#ff00ff",    # Neon Pink
+            "fg_string": "#f1fa8c", 
+            "fg_function": "#00f3ff",   # Neon Cyan
+            "fg_number": "#bd93f9", 
+            "border": "#2d2f3f", 
+            "hover": "#1a1c2e",
+            "select": "#2d2f3f", 
+            "line_num_bg": "#0b0c15", 
+            "line_num_fg": "#44475a",
+            "error": "#ff5555", 
+            "warning": "#f1fa8c", 
+            "success": "#50fa7b"
         }))
 
         self.register_theme(Theme("Modern Light", {
