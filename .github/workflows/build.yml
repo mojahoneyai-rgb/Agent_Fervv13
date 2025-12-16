@@ -1,0 +1,74 @@
+name: Build AI Fervv IDE
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller PyQt6 google-generativeai openai requests
+    
+    - name: Build executable
+      run: |
+        python build_exe.py
+    
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: AI_Fervv_IDE-windows
+        path: dist/*.exe
+        retention-days: 30
+        if-no-files-found: error
+
+  build-linux:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libxcb-xinerama0 libxcb-cursor0
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller PyQt6 google-generativeai openai requests
+    
+    - name: Build executable
+      run: |
+        python build_exe.py
+    
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: AI_Fervv_IDE-linux
+        path: dist/*
+        retention-days: 30
+        if-no-files-found: warn
