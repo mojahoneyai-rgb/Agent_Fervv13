@@ -1,6 +1,7 @@
-# AI Fervv IDE Dependencies
-PyQt6>=6.6.0
+customtkinter>=5.2.0
 google-generativeai>=0.3.0
 openai>=1.0.0
 requests>=2.31.0
 pyinstaller>=6.0.0
+Pillow>=10.0.0
+matplotlib>=3.8.0

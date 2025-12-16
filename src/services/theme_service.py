@@ -17,7 +17,7 @@ class ThemeService:
         
         # Load Defaults
         self._register_default_themes()
-        self.set_theme("VS Code Dark+")
+        self.set_theme("Cyberpunk Neon")
         
     def _register_default_themes(self):
         self.register_theme(Theme("VS Code Dark+", {
@@ -28,9 +28,26 @@ class ThemeService:
             "select": "#37373d", "line_num_bg": "#1e1e1e", "line_num_fg": "#858585",
             "error": "#f48771", "warning": "#cca700", "success": "#89d185"
         }))
-        # Add more themes here (Solarized, Cyberpunk, etc.) as implemented previously
-        # For brevity in this initial file, we start with one. 
-        # The full list will be migrated.
+        
+        self.register_theme(Theme("Cyberpunk Neon", {
+            "bg_main": "#0b0c15", "bg_sidebar": "#13141f", "bg_activity": "#090a10",
+            "bg_status": "#ff007f", "fg_text": "#e0e6ed", "fg_comment": "#6272a4",
+            "fg_keyword": "#ff79c6", "fg_string": "#f1fa8c", "fg_function": "#8be9fd",
+            "fg_number": "#bd93f9", "border": "#44475a", "hover": "#282a36",
+            "select": "#44475a", "line_num_bg": "#0b0c15", "line_num_fg": "#6272a4",
+            "error": "#ff5555", "warning": "#f1fa8c", "success": "#50fa7b"
+        }))
+
+        self.register_theme(Theme("Modern Light", {
+            "bg_main": "#ffffff", "bg_sidebar": "#f3f3f3", "bg_activity": "#e8e8e8",
+            "bg_status": "#007acc", "fg_text": "#333333", "fg_comment": "#008000",
+            "fg_keyword": "#0000ff", "fg_string": "#a31515", "fg_function": "#795e26",
+            "fg_number": "#098658", "border": "#e5e5e5", "hover": "#e8e8e8",
+            "select": "#add6ff", "line_num_bg": "#ffffff", "line_num_fg": "#2b91af",
+            "error": "#cd3131", "warning": "#cca700", "success": "#098658"
+        }))
+
+        self.set_theme("Cyberpunk Neon")
 
     def register_theme(self, theme: Theme):
         self._themes[theme.name] = theme
