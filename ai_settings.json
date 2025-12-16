@@ -1,0 +1,6 @@
+{
+  "provider": "openai",
+  "openai_key": "",
+  "gemini_key": "",
+  "model": "gpt-4o-mini"
+}

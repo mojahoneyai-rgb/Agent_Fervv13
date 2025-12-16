@@ -1,0 +1,90 @@
+﻿Import successful, creating app...
+python : Traceback 
+(most recent call l
+ast):
+At line:1 char:1
++ python -u test_ap
+p.py 2>&1 | Out-Fil
+e -Encoding UTF8 fu
+ll_error.txt;  ...
++ ~~~~~~~~~~~~~~~~~
+~~~~~~~~~
+    + CategoryInfo 
+             : No  
+  tSpecified: (T   
+ raceback (most    
+ recent call l    a
+st)::String)     []
+, RemoteExce    pti
+on
+    + FullyQualifi 
+   edErrorId : Na  
+  tiveCommandErr   
+ or
+ 
+  File "C:\Users\xp
+ini\Desktop\AIFervv
+app\test_app.py", l
+ine 6, in <module>
+    app = main.Ferv
+vIDE()
+          ^^^^^^^^^
+^^^^^^
+  File "C:\Users\xp
+ini\Desktop\AIFervv
+app\main.py", line 
+231, in __init__
+    self.agent = AI
+_Fervv()
+                 ^^
+^^^^^^^^
+  File "C:\Users\xp
+ini\Desktop\AIFervv
+app\agent.py", line
+ 12, in __init__
+    api_key = os.en
+viron.get("OPENAI_A
+PI_KEY", "")
+              ^^
+UnboundLocalError: 
+cannot access local
+ variable 'os' wher
+e it is not associa
+ted with a value
+
+During handling of 
+the above exception
+, another exception
+ occurred:
+
+Traceback (most rec
+ent call last):
+  File "C:\Users\xp
+ini\Desktop\AIFervv
+app\test_app.py", l
+ine 10, in <module>
+    print(f"\n\u274
+c ERROR: {type(e)._
+_name__}: {e}\n")
+  File "C:\Program 
+Files\WindowsApps\P
+ythonSoftwareFounda
+tion.Python.3.11_3.
+11.2544.0_x64__qbz5
+n2kfra8p0\Lib\encod
+ings\cp1250.py", li
+ne 19, in encode
+    return codecs.c
+harmap_encode(input
+,self.errors,encodi
+ng_table)[0]
+           ^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^
+UnicodeEncodeError:
+ 'charmap' codec ca
+n't encode characte
+r '\u274c' in posit
+ion 2: character ma
+ps to <undefined>
