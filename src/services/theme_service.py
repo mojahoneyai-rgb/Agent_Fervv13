@@ -30,24 +30,24 @@ class ThemeService:
         }))
         
         self.register_theme(Theme("Cyberpunk Neon", {
-            "bg_main": "#0b0c15",       # Deep Void
-            "bg_sidebar": "#0f1019",    # Slightly lighter void
-            "bg_activity": "#050608",   # Darkest
-            "bg_status": "#00f3ff",     # Neon Cyan
-            "fg_text": "#e0e6ed", 
-            "fg_comment": "#6272a4",
-            "fg_keyword": "#ff00ff",    # Neon Pink
-            "fg_string": "#f1fa8c", 
-            "fg_function": "#00f3ff",   # Neon Cyan
-            "fg_number": "#bd93f9", 
-            "border": "#2d2f3f", 
-            "hover": "#1a1c2e",
-            "select": "#2d2f3f", 
-            "line_num_bg": "#0b0c15", 
-            "line_num_fg": "#44475a",
-            "error": "#ff5555", 
-            "warning": "#f1fa8c", 
-            "success": "#50fa7b"
+            "bg_main": "#1e1e2e",       # Lighter dark blue-gray (like VS Code)
+            "bg_sidebar": "#252535",    # Slightly lighter sidebar
+            "bg_activity": "#1a1a28",   # Activity bar darker
+            "bg_status": "#007acc",     # Blue status bar (VS Code style)
+            "fg_text": "#d4d4d4", 
+            "fg_comment": "#6a9955",
+            "fg_keyword": "#c678dd",    # Purple keywords
+            "fg_string": "#98c379",     # Green strings
+            "fg_function": "#61afef",   # Blue functions
+            "fg_number": "#d19a66", 
+            "border": "#3d3d5c", 
+            "hover": "#2a2a40",
+            "select": "#3d3d5c", 
+            "line_num_bg": "#1e1e2e", 
+            "line_num_fg": "#858585",
+            "error": "#f44747", 
+            "warning": "#cca700", 
+            "success": "#89d185"
         }))
 
         self.register_theme(Theme("Modern Light", {
