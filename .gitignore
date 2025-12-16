@@ -1,0 +1,22 @@
+# Build artifacts (too large for GitHub)
+build/
+dist/
+*.exe
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Logs (can be large)
+logs/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
