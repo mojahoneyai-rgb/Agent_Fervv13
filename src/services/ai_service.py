@@ -20,29 +20,82 @@ class ReasoningEngine:
         self.ai = ai_service
 
     def think(self, user_input, context=None):
-        """Execute Chain-of-Thought processing"""
-        # 1. Thought Generation
+        """Execute Chain-of-Thought processing with Memory and Web Search"""
+        from src.services.memory_service import MemoryService
+        
+        # Initialize Memory
+        if not hasattr(self, 'memory'):
+            self.memory = MemoryService()
+
+        # 1. Check Memory
+        memory_context = self.memory.get_context_string(user_input)
+        
+        # 2. Enhanced Prompt
         thought_prompt = f"""
-        Analyze the following user request. 
-        Determine the intent (coding, explanation, system command).
-        Formulate a plan.
+        You are an advanced AI Agent with access to persistent memory and web search.
         
         User Request: {user_input}
         
-        Output format:
-        [[THOUGHT]]
-        ...analysis...
-        [[/THOUGHT]]
-        [[PLAN]]
-        ...steps...
-        [[/PLAN]]
-        """
-        # In a real "1000x" system, we'd run this against a fast model (e.g., gpt-3.5-turbo)
-        # For now, we simulate or execute if desired.
+        Using Memory Context:
+        {memory_context}
         
-        # 2. Execution
-        response = self.ai.generate_raw(user_input, system_prompt="You are an expert AI.")
-        return response
+        First, Analyze if you have enough information to answer. 
+        If you are missing critical information about recent events or specific libraries, 
+        you should request a SEARCH.
+        
+        Output one of two formats:
+        
+        Format 1 (If you need to search):
+        [[SEARCH: <query>]]
+        
+        Format 2 (If you can answer):
+        [[THOUGHT]]
+        ...your reasoning...
+        [[/THOUGHT]]
+        [[ANSWER]]
+        ...your final response...
+        [[/ANSWER]]
+        """
+        
+        # 3. Initial AI Call
+        initial_response = self.ai.generate_raw(thought_prompt, system_prompt="You are a smart autonomous agent.")
+        
+        # 4. Handle Search Intent
+        if "[[SEARCH:" in initial_response:
+            try:
+                # Extract query
+                start = initial_response.find("[[SEARCH:") + 9
+                end = initial_response.find("]]", start)
+                search_query = initial_response[start:end].strip()
+                
+                # Perform Search
+                from duckduckgo_search import DDGS
+                with DDGS() as ddgs:
+                    results = list(ddgs.text(search_query, max_results=3))
+                    
+                search_summary = "\n".join([f"- {r['title']}: {r['body']}" for r in results])
+                
+                # Learn (Save to memory)
+                self.memory.remember(search_query, search_summary, source="web_search")
+                
+                # Re-prompt with new knowledge
+                final_prompt = f"""
+                User Request: {user_input}
+                
+                New Information found via Search ({search_query}):
+                {search_summary}
+                
+                Memory Context:
+                {memory_context}
+                
+                Now provide a comprehensive answer.
+                """
+                return self.ai.generate_raw(final_prompt, system_prompt="You are an expert AI with access to real-time data.")
+                
+            except Exception as e:
+                return f"I tried to search for '{search_query}' but failed: {str(e)}. Here is what I know: {initial_response}"
+
+        return initial_response
 
 class AIService:
     def __init__(self):
